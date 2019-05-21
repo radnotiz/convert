@@ -3,7 +3,7 @@ const wordsUpToNineteen = ["zero", "one", "two", "three", "four", "five", "six",
 
 const wordsOfTens = ["zero", "ten", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety"];
 
-function convertTwoDigits(number) {
+function convertUpToTwoDigits(number) {
     if (number < 20) {
         return [wordsUpToNineteen[number]];
     } else if (number < 100) {
@@ -17,10 +17,10 @@ function convertTwoDigits(number) {
     }
 }
 
-function convert(number) {
+function convertUpToThreeDigits(number) {
     const result = [];
     if (number < 100) {
-        result.push(...convertTwoDigits(number));
+        result.push(...convertUpToTwoDigits(number));
     } else {
         const hundreds = Math.floor(number / 100);
         const rest = number - (100 * hundreds);
@@ -28,7 +28,26 @@ function convert(number) {
         result.push('hundred');
         if (rest > 0) {
             result.push('and');
-            result.push(...convertTwoDigits(rest));
+            result.push(...convertUpToTwoDigits(rest));
+        }
+    }
+    return result;
+}
+
+function convert(number) {
+    const result = [];
+    if (number < 1000) {
+        result.push(...convertUpToThreeDigits(number));
+    } else {
+        const thousands = Math.floor(number / 1000);
+        const rest = number - (1000 * thousands);
+        result.push(wordsUpToNineteen[thousands]);
+        result.push('thousand');
+        if (rest > 0 && rest < 100) {
+            result.push('and');
+            result.push(...convertUpToThreeDigits(rest));
+        } else if (rest >= 100) {
+            result.push(...convertUpToThreeDigits(rest));
         }
     }
     return result.join(' ');
