@@ -30,7 +30,13 @@ test.each([
     [10000, "ten thousand"],
     [10001, "ten thousand and one"],
     [24059, "twenty four thousand and fifty nine"],
-    [508029485092, "five hundred and eigth billion twenty nine million four hundred and eighty five thousand and ninety two"]
+    [508029485092, "five hundred and eigth billion twenty nine million four hundred and eighty five \
+thousand and ninety two"],
+    [Number.MAX_SAFE_INTEGER, "nine quadrillion seven trillion one hundred and ninety nine billion two \
+hundred and fifty four million seven hundred and fourty thousand nine hundred and ninety one"],
+    ["213", "two hundred and thirteen"],
+    ["1" + Number.MAX_SAFE_INTEGER, "nineteen quadrillion seven trillion one hundred and ninety nine \
+billion two hundred and fifty four million seven hundred and fourty thousand nine hundred and ninety one"],
 ])('converts %i', (number, expected) => {
     expect(convert(number)).toBe(expected);
 });
