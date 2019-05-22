@@ -44,8 +44,26 @@ function* chunksOf(array) {
     }
 }
 
+function trim(number) {
+    let trimmed = number.toString();
+    while (trimmed.charAt(0) === '0' && trimmed.length > 1) {
+        trimmed = trimmed.substr(1);
+    }
+    return trimmed;
+}
+
+function check(input) {
+    var i = input.toString().length;
+    while (i--) {
+        if (isNaN(parseInt(input.charAt(i)))) {
+            throw new TypeError(input);
+        }
+    }
+    return input;
+}
+
 function convert(number) {
-    return [...chunksOf(number.toString().split(''))]
+    return [...chunksOf(trim(check(number.toString())).split(''))]
         .map((chunk, index, array) => {
             const number = parseInt(chunk, 10);
             if (index < array.length - 1 && number === 0) {

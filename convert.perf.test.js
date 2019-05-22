@@ -9,7 +9,7 @@ test('execution time', () => {
     obs.observe({ entryTypes: ['measure'] });
     performance.mark('A');
     for (let i = 0; i < 10e4; i++) {
-        convert(Math.floor(Math.random() * 2e51 + 2e52));
+        convert(parseInt(Math.floor(Math.random() * 2e51 + 2e52)));
     }
     performance.mark('B');
     performance.measure('A to B', 'A', 'B');
@@ -24,10 +24,10 @@ test('memory usage', async () => {
         highest = current > highest ? current : highest;
     }, 1000)
     const run = setInterval(() => {
-        convert(Math.floor(Math.random() * 2e51 + 2e52));
+        convert(parseInt(Math.floor(Math.random() * 2e51 + 2e52), 10));
     }, 1);
     await new Promise(resolve => {
-        setTimeout(resolve, 65000);
+        setTimeout(resolve, 5000);
     });
     clearInterval(run);
     clearInterval(measure);

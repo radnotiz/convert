@@ -37,8 +37,13 @@ hundred and fifty four million seven hundred and fourty thousand nine hundred an
     ["213", "two hundred and thirteen"],
     ["1" + Number.MAX_SAFE_INTEGER, "nineteen quadrillion seven trillion one hundred and ninety nine \
 billion two hundred and fifty four million seven hundred and fourty thousand nine hundred and ninety one"],
+    ["0985", "nine hundred and eighty five"],
 ])('converts %i', (number, expected) => {
     expect(convert(number)).toBe(expected);
+});
+
+test('invalid input', () => {
+    expect(()=>convert("fsa4rg22")).toThrowError(TypeError);
 });
 
 test('chunks numbers into reversed groups of 3 digits', () => {
