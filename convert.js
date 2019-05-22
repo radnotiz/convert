@@ -34,23 +34,36 @@ function convertUpToThreeDigits(number) {
     return result;
 }
 
-function convert(number) {
-    const result = [];
-    if (number < 1000) {
-        result.push(...convertUpToThreeDigits(number));
-    } else {
-        const thousands = Math.floor(number / 1000);
-        const rest = number - (1000 * thousands);
-        result.push(wordsUpToNineteen[thousands]);
-        result.push('thousand');
-        if (rest > 0 && rest < 100) {
-            result.push('and');
-            result.push(...convertUpToThreeDigits(rest));
-        } else if (rest >= 100) {
-            result.push(...convertUpToThreeDigits(rest));
-        }
+const powersOfTen = ["thousand", "million", "billion", "trillion", "quadrillion", "quintillion", "sextillion", "septillion", "octillion", "nonillion", "decillion",
+    "undecillion", "duodecillion", "tredecillion", "quatttuor-decillion", "quindecillion", "sexdecillion", "septen-decillion", "octodecillion", "novemdecillion"]
+
+function* chunksOf(array) {
+    for (let i = 3; i < array.length + 3; i = i + 3) {
+        const start = array.length - i;
+        yield array.slice(start >= 0 ? start : 0, array.length - i + 3).join('');
     }
-    return result.join(' ');
 }
 
-module.exports = convert;
+function convert(number) {
+    return [...chunksOf(number.toString().split(''))]
+        .map((chunk, index, array) => {
+            const number = parseInt(chunk, 10);
+            if (index < array.length - 1 && number === 0) {
+                return [];
+            }
+            const result = [];
+            if (index === 0 && array.length > 1 && number < 100) {
+                result.push('and');
+            }
+            return result.concat(convertUpToThreeDigits(number)
+                .concat(powersOfTen[index - 1])
+                .filter(x => !!x));
+        })
+        .map(x => x.join(' '))
+        .filter(x => x && x.length)
+        .reverse()
+        .join(' ');
+}
+
+module.exports.convert = convert;
+module.exports.chunksOf = chunksOf;

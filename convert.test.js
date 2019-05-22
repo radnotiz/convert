@@ -1,4 +1,4 @@
-const convert = require('./convert');
+const { convert, chunksOf } = require('./convert');
 
 test.each([
     [1, "one"],
@@ -28,6 +28,13 @@ test.each([
     [7209, "seven thousand two hundred and nine"],
     [9999, "nine thousand nine hundred and ninety nine"],
     [10000, "ten thousand"],
+    [10001, "ten thousand and one"],
+    [24059, "twenty four thousand and fifty nine"],
+    [508029485092, "five hundred and eigth billion twenty nine million four hundred and eighty five thousand and ninety two"]
 ])('converts %i', (number, expected) => {
     expect(convert(number)).toBe(expected);
 });
+
+test('chunks numbers into reversed groups of 3 digits', () => {
+    expect([...chunksOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 0])].reverse()).toEqual(["1", "234", "567", "890"])
+})
